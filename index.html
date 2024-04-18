@@ -50,7 +50,7 @@ https://zimjs.com/zapps
             const bgColor = "#cbfbf0"; //scandal
             const color = "#bf30aa"; //Medium Red Violet
             const colorLite = "#d4e8f1"; // Link Water
-            const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png", "toma-icon.png"] //update serviceworker.js as well
+            const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png", "toma-icon.png", "mic.png", "bg-black.jpg"] //update serviceworker.js as well
             const path = "assets/";
             new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
             function ready() {
@@ -63,7 +63,7 @@ https://zimjs.com/zapps
 	new PWA(runZapp);
 	function runZapp() {
 	                // Given F, S, W, H or frame, stage, stageW, stageH
-	                new Pic("bg.jpg").scaleTo().center();
+	                new Pic("bg-black.jpg").scaleTo().center();
 	                const holder = new Container(1000,2000).scaleTo(S,100,100).center(); // Whatever the stage is fit it to 100 percent x and y
 	                const doggo = new Container().center().drag({all:true}).sca(1.1);
 	                new Circle(130, color)
@@ -77,6 +77,15 @@ https://zimjs.com/zapps
 	                // new Grid();
 	                // responsive rectangle
 	                // new Rectangle(0.2*W, 0.2*H, black).loc(0.3*W,0.5*H);
+
+					const mic = new Pic("mic.png").sca(1.0).center().mov(0,220);
+
+					const speech = new Speech();
+					// interact at least once before talking
+					mic.tap(()=>{
+					speech.talk("Hello World. Bonjour Tout le monde.");
+					});
+
 	                F.on("resize", ()=>{
 	                    // tab.top();
 	                    tab.siz(W*0.90).pos(0,W*0.05,CENTER,TOP);//adding margin
