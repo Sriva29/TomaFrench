@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>ZIM - TomaFrench - Code Creativity</title>
 
-<!--
+<head>
+	<meta charset="utf-8" />
+	<title>ZIM - TomaFrench - Code Creativity</title>
+
+	<!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ZIM Zapps
 Progressive Web App (PWA) tool output from
@@ -12,96 +13,310 @@ https://zimjs.com/zapps
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
-<!-- ZIM PWA STEP 1 - MANIFEST -->
-<link rel="manifest" href="manifest.json">
+	<!-- ZIM PWA STEP 1 - MANIFEST -->
+	<link rel="manifest" href="manifest.json">
 
-<!-- ZIM PWA STEP 2 - META -->
-<meta name="apple-mobile-web-app-title" content="TomaFrench">
-<meta name="theme-color" content="#333333">
-<meta name="msapplication-TileColor" content="#333333">
+	<!-- ZIM PWA STEP 2 - META -->
+	<meta name="apple-mobile-web-app-title" content="TomaFrench">
+	<meta name="theme-color" content="#333333">
+	<meta name="msapplication-TileColor" content="#333333">
 
-<meta name="viewport" content="width=device-width, user-scalable=no">
-<link rel="apple-touch-icon" href="icons/icon_152.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="msapplication-TileImage" content="icons/icon_144.png">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="apple-touch-icon" href="icons/icon_152.png">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="msapplication-TileImage" content="icons/icon_144.png">
 
-<!-- should have faveicons - see link below -->
-<!-- see https://www.favicon-generator.org/ -->
+	<!-- should have favicons - see link below -->
+	<!-- see https://www.favicon-generator.org/ -->
 
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="msapplication-starturl" content="./">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="msapplication-starturl" content="./">
 
-<!-- ZIM PWA STEP 3 - SERVICE WORKER -->
-<script>
-	window.addEventListener("DOMContentLoaded", function () {
-		if (location.protocol === "https:" && "serviceWorker" in navigator) navigator.serviceWorker.register("./serviceworker.js");
-	});
-</script>
+	<!-- ZIM PWA STEP 3 - SERVICE WORKER -->
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			if (location.protocol === "https:" && "serviceWorker" in navigator) navigator.serviceWorker.register("./serviceworker.js");
+		});
+	</script>
 
-        <!-- <script type="module"> -->
+	<!-- <script type="module"> -->
 
-        <script src="libraries/createjs.js"></script>
-        <script src="libraries/zim_min.js"></script>
-        <script>
-            // IC24_mobile1, mobile2, mobile3
-            // import zim from "https://zimjs.org/cdn/016/zim";
-            const bgColor = "#cbfbf0"; //scandal
-            const color = "#bf30aa"; //Medium Red Violet
-            const colorLite = "#d4e8f1"; // Link Water
-            const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png", "toma-icon.png", "mic.png", "bg-black.jpg"] //update serviceworker.js as well
-            const path = "assets/";
-            new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
-            function ready() {
+	<script src="libraries/createjs.js"></script>
+	<script src="libraries/zim_min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+		// IC24_mobile1, mobile2, mobile3
+		// import zim from "https://zimjs.org/cdn/016/zim";
+		const bgColor = "#cbfbf0"; //scandal
+		const color = "#bf30aa"; //Medium Red Violet
+		const colorLite = "#d4e8f1"; // Link Water
+		const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png", "toma-icon.png", "mic.png", "mic-on.png", "bg-black.jpg",
+			"https://fonts.googleapis.com/css2?family=Lily+Script+One&family=Mitr:wght@200;300;400;500;600;700&display=swap",
+			"message2.png",
+		] //update serviceworker.js as well
+		const path = "assets/";
+		new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
+		function ready() {
+			new PWA(runZapp);
+			function runZapp() {
 
-	// ZIM PWA STEP 4 - ADD TO HOME SCREEN (A2HS)
-	// NOTE: new PWA() works with ZIM Cat 04 or beyond
-	// Message shows if only if running from mobile Browser
-	// See https://zimjs.com/docs.html?item=PWA for more options
+				// let start;
+				// function startScreen() {
+				// 	start = new Container().center();
+				// 	const startButton = new Button({
+				// 		label: "Start",
+				// 		width: 200,
+				// 		height: 50,
+				// 		backgroundColor: color,
+				// 		color: white,
+				// 		rollBackgroundColor: colorLite,
+				// 		rollColor: white,
+				// 		shadowBlur: 10,
+				// 		shadowColor: color,
+				// 	}).center(start);
+				// 	startButton.tap(() => {
 
-	new PWA(runZapp);
-	function runZapp() {
-	                // Given F, S, W, H or frame, stage, stageW, stageH
-	                new Pic("bg-black.jpg").scaleTo().center();
-	                const holder = new Container(1000,2000).scaleTo(S,100,100).center(); // Whatever the stage is fit it to 100 percent x and y
-	                const doggo = new Container().center().drag({all:true}).sca(1.1);
-	                new Circle(130, color)
-	                    .center(doggo)
-	                    .drag();
-	                
-	                new Pic("toma-icon.png").sca(0.30).center(doggo);
-	                // const tab = new Tabs()
-	                //     .siz(1000)
-	                //     .pos(0,0,CENTER,TOP, holder);
-	                // new Grid();
-	                // responsive rectangle
-	                // new Rectangle(0.2*W, 0.2*H, black).loc(0.3*W,0.5*H);
+				// 		lilyIntro();
+				// 		// start.dispose();
+				// 	});
+				// }
+				// startScreen();
 
-					const mic = new Pic("mic.png").sca(1.0).center().mov(0,220);
+				// function lilyIntro() {
+				// 	start.dispose();
+				// 	const lily = new Container().center();
+				// 	const lilyPic = new Pic("poodle-crop.png").center(lily);
+				// 	const lilyText = new Label({
+				// 		text: "Hello, I am Lily. \nI am a French Poodle. \nI am here to help you learn French. \nLet's have some fun together.",
+				// 		color: white,
+				// 		font: "Mitr",
+				// 		size: 18,
+				// 		align: CENTER,
+				// 		valign: CENTER,
+				// 		shadowColor: color,
+				// 		shadowBlur: 10,
+				// 	}).center(lily).mov(0, 200);
+				// 	const lilyButton = new Button({
+				// 		label: "Let's Start",
+				// 		width: 200,
+				// 		height: 50,
+				// 		backgroundColor: color,
+				// 		color: white,
+				// 		rollBackgroundColor: colorLite,
+				// 		rollColor: white,
+				// 		shadowBlur: 10,
+				// 		shadowColor: color,
+				// 	}).center(lily).mov(0, 300);
+				// 	lilyButton.tap(() => {
+				// 		lily.dispose();
+				// 		rainScene();
+				// 	});
+				// }
+				// // lilyIntro();
+				// function rainScene() {
+				// 	const rain = new Container().center();
+				// 	const rainPic = new Pic("rain.gif").center(rain);
+				// 	const rainText = new Label({
+				// 		text: "It's raining French words. \nLet's catch them all.",
+				// 		color: white,
+				// 		font: "Mitr",
+				// 		size: 18,
+				// 		align: CENTER,
+				// 		valign: CENTER,
+				// 		shadowColor: color,
+				// 		shadowBlur: 10,
+				// 	}).center(rain).mov(0, 200);
+				// 	const rainButton = new Button({
+				// 		label: "Catch the words",
+				// 		width: 200,
+				// 		height: 50,
+				// 		backgroundColor: color,
+				// 		color: white,
+				// 		rollBackgroundColor: colorLite,
+				// 		rollColor: white,
+				// 		shadowBlur: 10,
+				// 		shadowColor: color,
+				// 	}).center(rain).mov(0, 300);
+				// 	rainButton.tap(() => {
+				// 		rain.dispose();
+				// 		tomaFrench();
+				// 	});
+				// }
 
-					const speech = new Speech();
-					// interact at least once before talking
-					mic.tap(()=>{
-					speech.talk("Hello World. Bonjour Tout le monde.");
+				// function tomaFrench() {
+
+				const title = new Label({
+					text: "Toma French",
+					color: white,
+					font: "Lily Script One",
+					size: 60,
+					// align: CENTER,
+					// valign: CENTER,
+				}).center().mov(0, -100);
+
+				new Pic("bg-black.jpg").scaleTo().center();
+				const holder = new Container(1000, 2000).scaleTo(S, 100, 100).center(); // Whatever the stage is fit it to 100 percent x and y
+				const doggo = new Container().center().drag({ all: true }).sca(1.1);
+				new Circle(130, color)
+					.center(doggo)
+					.drag();
+				const lab = new Label().center();
+				S.update();
+				F.on("deviceorientation", e => {
+					lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
+					S.update();
+				});
+				new Pic("toma-icon.png").sca(0.35).center(doggo)
+				doggo.mov(20, -100);
+				doggo.sca(0.8);
+
+				const speak = new Pic("mic-on.png").sca(0.6).center().mov(-70, 220);
+				const mic = new Pic("mic.png").sca(1.0).center().mov(70, 220);
+				const msgCont = new Container().center().mov(0, -300);
+				const message = new Pic("message2.png").sca(0.8).center(msgCont)
+					// .mov(0, -300)
+					.drag();
+				const messageText = new Label({
+					text: "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.",
+					color: white,
+					font: "Mitr",
+					size: 18,
+					align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				}).center(msgCont)
+					.mov(22, 35);
+				let label;
+				const speech = new Speech();
+				// interact at least once before talking
+				speak.tap(() => {
+					speech.talk("Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.");
+					// speech.listen((text)=>{
+					// 	listening.text = text;
+					// });
+					listening.vis(true);
+				});
+
+				mic.tap(() => {
+					speech.listen(false, "fr-FR");
+				});
+
+				let wordsSaid = "bonjour";
+
+				speech.on("result", e => {
+					// e.words will be the words 
+					zog("Speech Recorded!")
+					wordsSaid = e.words;
+					timeout(5, () => {
+						zog("This is what is being sent to the LLM: ", wordsSaid)
+						sendToLLM(wordsSaid);
 					});
+					// new Button({
+					// 	label: "Send to LLM",
+					// 	width: 200,
+					// 	height: 50,
+					// 	backgroundColor: color,
+					// 	color: white,
+					// 	rollBackgroundColor: colorLite,
+					// 	rollColor: white,
+					// 	shadowBlur: 10,
+					// 	shadowColor: color,
+					// }).on("click", () => {
+					// 	zog("This is what is being sent to the LLM: ", wordsSaid)
+					// 	sendToLLM(wordsSaid);
 
-	                F.on("resize", ()=>{
-	                    // tab.top();
-	                    tab.siz(W*0.90).pos(0,W*0.05,CENTER,TOP);//adding margin
-	                })
-	} // end runZapp
+					// }).center().mov(0, 200);
+					// e.confidence will be percent confidence
+					if (label) label.dispose(); // get rid of old label
+					label = new Label({
+						text: capitalizeFirst(e.words),
+						labelWidth: 300,
+						labelHeight: 25,
+						font: "Mitr",
+						// backgroundColor: (pluck(red, blue, orange, green, yellow)).toAlpha(.8),
+						color: white,
+						align: CENTER,
+						valign: CENTER,
+						padding: 30
+					}).centerReg().mov(0, 100).alp(0).animate({ alpha: 1 }, .5, null, target => {
+						if (e.confidence) {
+							// percent.text = Math.floor(e.confidence * 100);
+							zog("confidence", Math.floor(e.confidence * 100));
+						}
+					});
+					S.update();
+				});
 
-            } // end ready
-        </script>
-        <style>
-            body{
-                background-size:auto;
-                background-repeat:repeat-y;
-                background-image: url("assets/bg.jpg");
-            }
-        </style>
-        
-    </head>
-    <body></body>
+				function sendToLLM(words) {
+					// zog("words", words);
+					const messages = [
+						{
+							role: 'system',
+							content: 'You are an AI assistant with over 400 years of experience in teaching French. Pretend that you are a dog named Lily and review the french phrase given to you by the user and give feedback.'
+						},
+						{
+							role: 'user',
+							content: words,
+						},
+					];
+
+					axios.post('http://localhost:5000/talk', {
+						messages,
+						model: 'gpt-3.5-turbo',
+					})
+						.then(response => {
+							if (response.data.choices && response.data.choices.length > 0) {
+								const feedback = response.data.choices[0].message.content;
+								zog("AI Feedback: ", feedback);
+								// Display feedback to the user here
+								// For example, by updating the text of a Label or creating a new one
+								new Label({
+									text: feedback,
+									color: white,
+									width: W - 0.2 * W,
+									height: 200,
+									font: "Mitr",
+									size: 18,
+									align: CENTER,
+									valign: CENTER,
+									shadowColor: color,
+									shadowBlur: 10,
+								}).center()
+									.mov(22, 35);
+
+								speech.talk(feedback, "Google francais", 1.0, "fr-FR");
+								S.update();
+							}
+						})
+						.catch(error => {
+							console.error('Error:', error);
+							zog('Failed to review.');
+						});
+				}
+
+			} // end tomaFrench
+
+			F.on("resize", () => {
+				// tab.top();
+				// tab.siz(W*0.90).pos(0,W*0.05,CENTER,TOP);//adding margin
+			})
+			// } // end runZapp
+
+		} // end ready
+	</script>
+	<style>
+		body {
+			background-size: auto;
+			background-repeat: repeat-y;
+			background-image: url("assets/bg-black.jpg");
+		}
+	</style>
+
+</head>
+
+<body></body>
+
 </html>

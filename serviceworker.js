@@ -13,7 +13,11 @@ var filesToCache = [
   'assets/bg.jpg',
   'assets/poodle-crop.jpg',
   'assets/poodle-crop.png',
-  'assets/toma-icon.png'
+  'assets/toma-icon.png',
+  "assets/mic.png", 
+  "assets/bg-black.jpg",
+	"https://fonts.googleapis.com/css2?family=Lily+Script+One&family=Mitr:wght@200;300;400;500;600;700&display=swap",
+			
 ];
 
 /* Start the service worker and cache all of the app's content */
