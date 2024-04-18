@@ -163,11 +163,11 @@ https://zimjs.com/zapps
 					.center(doggo)
 					.drag();
 				// on iOS, the sensors must be allowed first - this example works for all devices
-				const permissionType = "deviceorientation"; // or "devicemotion"
+				const permissionType = "devicemotion"; // or "devicemotion"
 				const ask = new PermissionAsk(init, permissionType);
 				const lab = new Label().center();
 				S.update();
-				F.on("deviceorientation", e => {
+				F.on("devicemotion", e => {
 					lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
 					S.update();
 				});
