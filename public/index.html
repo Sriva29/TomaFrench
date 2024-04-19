@@ -164,7 +164,7 @@ https://zimjs.com/zapps
 				new Circle(130, color)
 					.center(doggo)
 					.drag();
-				doggo.addPhysics({bounciness:0, angular: 1, density: 1.5});
+				doggo.addPhysics({bounciness:0, dynamic:false, angular: 1, density: 1.5});
 				// on iOS, the sensors must be allowed first - this example works for all devices
 				const permissionType = "devicemotion"; // or "devicemotion"
 				const ask = new PermissionAsk(init, permissionType);
@@ -235,7 +235,7 @@ https://zimjs.com/zapps
 					// e.words will be the words 
 					zog("Speech Recorded!")
 					wordsSaid = e.words;
-					timeout(5, () => {
+					timeout(3, () => {
 						zog("This is what is being sent to the LLM: ", wordsSaid)
 						sendToLLM(wordsSaid);
 					});

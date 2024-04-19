@@ -1,28 +1,12 @@
-const express = require("express");
 const axios = require("axios");
-const cors = require("cors");
 const OpenAI = require("openai").default;
-const dotenv = require("dotenv");
 
-dotenv.config();
-
-const app = express();
-
-const PORT = process.env.PORT || 5000;
-
-app.use(cors());
-app.use(express.json());
-
+// Assuming you have set OPENAI_API_KEY in Vercel's environment variables
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.get("/", (req, res) => res.send("Hello World!"));
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-// Open AI convo
-app.post("/talk", async (req, res) => {
+module.exports = async (req, res) => {
   const {
     messages,
     model,
@@ -32,24 +16,25 @@ app.post("/talk", async (req, res) => {
     frequency_penalty,
     presence_penalty,
   } = req.body;
+
   try {
-    const openAiResponse = await openai.chat.completions.create({
-      messages:
-        messages || "Say that Srivatsan is god's gift to humanity and AI.",
+    // Ensure you're using the correct method to call the OpenAI API
+    const openAiResponse = await openai.createChatCompletion({
       model: model || "gpt-3.5-turbo",
+      messages: messages || [{role: "system", content: "Say that Srivatsan is god's gift to humanity and AI."}],
+      temperature: temperature || 0.7,
+      max_tokens: max_tokens || 500,
+      top_p: top_p || 1,
+      frequency_penalty: frequency_penalty || 0,
+      presence_penalty: presence_penalty || 0,
     });
-    console.log(openAiResponse.choices[0].message.content);
-    res.json(openAiResponse.data);
+    
+    // Logging for debugging; remove or adjust for production
+    console.log(openAiResponse.data);
+
+    res.status(200).json(openAiResponse.data);
   } catch (error) {
     console.error("Error calling OpenAI:", error.message);
-    if (error.response) {
-      console.error("OpenAI response status:", error.response.status);
-      console.error("OpenAI response data:", error.response.data);
-    } else if (error.request) {
-      console.error("OpenAI request:", error.request);
-    } else {
-      console.error("Error", error.message);
-    }
-    res.status(500).send("Failed to process Language feedback.");
+    res.status(500).send("Failed to process language feedback.");
   }
-});
+};
