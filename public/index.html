@@ -56,7 +56,7 @@ https://zimjs.com/zapps
 			"https://fonts.googleapis.com/css2?family=Lily+Script+One&family=Mitr:wght@200;300;400;500;600;700&display=swap",
 			"message2.png",
 		] //update serviceworker.js as well
-		const path = "assets/";
+		const path = "../assets/";
 		new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
 		function ready() {
 			new PWA(runZapp);
@@ -162,6 +162,7 @@ https://zimjs.com/zapps
 				new Circle(130, color)
 					.center(doggo)
 					.drag();
+				doggo.addPhysics({bounciness:0, angular: 1, density: 1.5});
 				// on iOS, the sensors must be allowed first - this example works for all devices
 				const permissionType = "devicemotion"; // or "devicemotion"
 				const ask = new PermissionAsk(init, permissionType);
@@ -171,6 +172,9 @@ https://zimjs.com/zapps
 					lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
 					S.update();
 				});
+				const forceX = e.rotation.y;
+                const forceY = e.rotation.x;
+				doggo.force(forceX, forceY);
 				function init(yes) {
 					// if the user answers yes to the PermissionAsk
 					const errorPane = new Pane("SENSOR not available", yellow);
