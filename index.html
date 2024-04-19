@@ -57,16 +57,7 @@ https://zimjs.com/zapps
 			"message2.png",
 		] //update serviceworker.js as well
 		const path = "assets/";
-		new Frame({
-			scaling: FULL, 
-			width: null, 
-			height: null, 
-			color: bgColor, 
-			outerColor: dark, 
-			ready: ready, 
-			assets: assets, 
-			path: path,
-			sensors: true,});
+		new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
 		function ready() {
 			new PWA(runZapp);
 			function runZapp() {
@@ -156,7 +147,14 @@ https://zimjs.com/zapps
 
 				// function tomaFrench() {
 
-
+				const title = new Label({
+					text: "Toma French",
+					color: white,
+					font: "Lily Script One",
+					size: 60,
+					// align: CENTER,
+					// valign: CENTER,
+				}).center().mov(0, -100);
 
 				new Pic("bg-black.jpg").scaleTo().center();
 				const holder = new Container(1000, 2000).scaleTo(S, 100, 100).center(); // Whatever the stage is fit it to 100 percent x and y
@@ -165,19 +163,12 @@ https://zimjs.com/zapps
 					.center(doggo)
 					.drag();
 				// on iOS, the sensors must be allowed first - this example works for all devices
-				const permissionType = "devicemotion"; // or "devicemotion"
+				const permissionType = "deviceorientation"; // or "devicemotion"
 				const ask = new PermissionAsk(init, permissionType);
 				const lab = new Label().center();
-				const title = new Label({
-					text: "Toma French",
-					color: white,
-					font: "Lily Script One",
-					size: 60,
-				}).center().mov(0, -350);
 				S.update();
-				F.on("devicemotion", e => {
+				F.on("deviceorientation", e => {
 					lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
-					zog(e.rotation.x, e.rotation.y, e.rotation.z);
 					S.update();
 				});
 				function init(yes) {
@@ -195,49 +186,44 @@ https://zimjs.com/zapps
 				new Pic("toma-icon.png").sca(0.35).center(doggo)
 				doggo.mov(20, -100);
 				doggo.sca(0.8);
-				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 220);
-				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 220).vis(false);
-				const msgCont = new Container().centerReg().center().mov(-20, -300);
-				const message = new Pic("message2.png").sca(0.8).centerReg().center(msgCont)
+
+				const speak = new Pic("mic-on.png").sca(0.6).center().mov(-70, 220);
+				const mic = new Pic("mic.png").sca(1.0).center().mov(70, 220);
+				const msgCont = new Container().center().mov(0, -300);
+				const message = new Pic("message2.png").sca(0.8).center(msgCont)
 					// .mov(0, -300)
-					// .drag();
+					.drag();
 				const messageText = new Label({
 					text: "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.",
 					color: white,
-					labelWidth: 300,
-					labelHeight: 100,
 					font: "Mitr",
 					size: 18,
 					align: CENTER,
 					valign: CENTER,
 					shadowColor: color,
 					shadowBlur: 10,
-				}).centerReg().center(msgCont)
-					.mov(35, 35);
+				}).center(msgCont)
+					.mov(22, 35);
 				let label;
 				const speech = new Speech();
 				// interact at least once before talking
-				// micActive.tap(() => {
-					// speech.talk("Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.", "Google francais", 1.0, "fr-FR");
+				speak.tap(() => {
+					speech.talk("Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.");
 					// speech.listen((text)=>{
 					// 	listening.text = text;
 					// });
 					// listening.vis(true);
-				// });
+				});
 
 				mic.tap(() => {
 					speech.listen(false, "fr-FR");
-					micActive.vis(true);
-					S.update();
 				});
 
 				let wordsSaid = "bonjour";
 
 				speech.on("result", e => {
 					// e.words will be the words 
-					zog("Speech Recorded!");
-					micActive.vis(false);
-					S.update();
+					zog("Speech Recorded!")
 					wordsSaid = e.words;
 					timeout(5, () => {
 						zog("This is what is being sent to the LLM: ", wordsSaid)
@@ -297,29 +283,24 @@ https://zimjs.com/zapps
 						model: 'gpt-3.5-turbo',
 					})
 						.then(response => {
-							zog(response);
-							// if (response.data.choices && response.data.choices.length > 0) {
-							if (response.data) {
-								// const feedback = response.data.choices[0].message.content;
-								const feedback = response.data;
+							if (response.data.choices && response.data.choices.length > 0) {
+								const feedback = response.data.choices[0].message.content;
 								zog("AI Feedback: ", feedback);
 								// Display feedback to the user here
 								// For example, by updating the text of a Label or creating a new one
-								// new Label({
-								// 	text: feedback,
-								// 	color: white,
-								// 	width: W - 0.2 * W,
-								// 	height: 200,
-								// 	font: "Mitr",
-								// 	size: 18,
-								// 	align: CENTER,
-								// 	valign: CENTER,
-								// 	shadowColor: color,
-								// 	shadowBlur: 10,
-								// }).center()
-								// 	.mov(22, 35);
-
-								messageText.text = addNewlineAfterSentences(feedback);
+								new Label({
+									text: feedback,
+									color: white,
+									width: W - 0.2 * W,
+									height: 200,
+									font: "Mitr",
+									size: 18,
+									align: CENTER,
+									valign: CENTER,
+									shadowColor: color,
+									shadowBlur: 10,
+								}).center()
+									.mov(22, 35);
 
 								speech.talk(feedback, "Google francais", 1.0, "fr-FR");
 								S.update();
@@ -330,13 +311,8 @@ https://zimjs.com/zapps
 							zog('Failed to review.');
 						});
 				}
-				function addNewlineAfterSentences(text) {
-					return text.replace(/([.!?]"?)(\s|$)/g, '$1\n');
-				}
-
 
 			} // end tomaFrench
-
 
 			F.on("resize", () => {
 				// tab.top();

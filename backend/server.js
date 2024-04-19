@@ -39,7 +39,7 @@ app.post("/talk", async (req, res) => {
       model: model || "gpt-3.5-turbo",
     });
     console.log(openAiResponse.choices[0].message.content);
-    res.json(openAiResponse.choices[0].message.content);
+    res.json(openAiResponse.data);
   } catch (error) {
     console.error("Error calling OpenAI:", error.message);
     if (error.response) {
