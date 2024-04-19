@@ -237,10 +237,11 @@ https://zimjs.com/zapps
 				doggo.tap(() => {
 					speech.talk(welcomeSpeech, "Google francais", 1.0, "fr-FR");
 					timeout(8, () => {
-					messageText.text = "Press the mic and say something in English. \nI will translate it to French for you.";
-					S.update();
-					speech.talk("Press the mic and say something in English. I will translate it to French for you.", "Google francais", 1.0, "fr-FR");
-				});
+						messageText.size = 18;
+						messageText.text = "Press the mic and say something in English. \nI will translate it to French for you.";
+						S.update();
+						speech.talk("Press the mic and say something in English. I will translate it to French for you.", "Google francais", 1.0, "fr-FR");
+					});
 				});
 				mic.tap(() => {
 					speech.listen(false, "fr-FR");
