@@ -180,17 +180,17 @@ https://zimjs.com/zapps
 					zog(e.rotation.x, e.rotation.y, e.rotation.z);
 					S.update();
 				});
-				// function init(yes) {
-				// 	// if the user answers yes to the PermissionAsk
-				// 	const errorPane = new Pane("SENSOR not available", yellow);
-				// 	if (yes) {
-				// 		// use the sensors       
-				// 		lab.text = decimals(e.rotation.x) + "," + decimals(e.rotation.y) + "," + decimals(e.rotation.z);
-				// 		S.update();
-				// 	} else { // answered no to PermissionAsk dialog      
-				// 		errorPane.show();
-				// 	}
-				// }
+				function init(yes) {
+					// if the user answers yes to the PermissionAsk
+					const errorPane = new Pane("SENSOR not available", yellow);
+					if (yes) {
+						// use the sensors       
+						lab.text = decimals(e.rotation.x) + "," + decimals(e.rotation.y) + "," + decimals(e.rotation.z);
+						S.update();
+					} else { // answered no to PermissionAsk dialog      
+						errorPane.show();
+					}
+				}
 
 				new Pic("toma-icon.png").sca(0.35).center(doggo)
 				doggo.mov(20, -100);
