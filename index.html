@@ -57,17 +57,16 @@ https://zimjs.com/zapps
 			"message2.png",
 		] //update serviceworker.js as well
 		const path = "assets/";
-		// new Frame({
-		// 	scaling: FULL, 
-		// 	width: null, 
-		// 	height: null, 
-		// 	color: bgColor, 
-		// 	outerColor: dark, 
-		// 	ready: ready, 
-		// 	assets: assets, 
-		// 	path: path,
-		// 	sensors: true,});
-		new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
+		new Frame({
+			scaling: FULL, 
+			width: null, 
+			height: null, 
+			color: bgColor, 
+			outerColor: dark, 
+			ready: ready, 
+			assets: assets, 
+			path: path,
+			sensors: true,});
 		function ready() {
 			new PWA(runZapp);
 			function runZapp() {
