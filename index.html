@@ -156,7 +156,13 @@ https://zimjs.com/zapps
 				// }
 
 				// function tomaFrench() {
-
+				
+				//---------------------------------------------------------
+				// DATA BIND
+				//---------------------------------------------------------
+				const b = new Bind(); // for data binding
+				const speechLang = new Label("fr-FR").bind("lang","fr-FR");	
+				b.to();
 
 
 				new Pic("bg-black.jpg").scaleTo().center();
@@ -207,7 +213,44 @@ https://zimjs.com/zapps
 				});
 
 				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 220);
-				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 220).vis(false);
+				const toggle = new Toggle({label:"FR"}).center().change(()=>{
+				   zog(toggle.toggled);
+				});
+				const langSelector = new Selector(new Tile(new Circle().centerReg(), 2, 1, 20, 20))
+					.center()
+					.change(e => {
+						e.target.currentItem.alpha = 0;
+						S.update();
+					});
+				S.update();
+				zog(langSelector.currentItem);
+				zog(langSelector.selectedIndex);
+				// new Label({
+				// 	text: "En",
+				// 	color: white,
+				// 	labelWidth: 300,
+				// 	labelHeight: 100,
+				// 	font: "Mitr",
+				// 	size: 18,
+				// 	align: CENTER,
+				// 	valign: CENTER,
+				// 	shadowColor: color,
+				// 	shadowBlur: 10,
+				// }).center().mov(50, 200);
+				// new Label({
+				// 	text: "Fr",
+				// 	color: white,
+				// 	labelWidth: 300,
+				// 	labelHeight: 100,
+				// 	font: "Mitr",
+				// 	size: 18,
+				// 	align: CENTER,
+				// 	valign: CENTER,
+				// 	shadowColor: color,
+				// 	shadowBlur: 10,
+				// }).center().mov(-50, 200);
+
+				// const micActive = new Pic("mic-on.png").sca(0.6).center().mov(-50, 220);
 				const msgCont = new Container().centerReg().center().mov(-35, -250);
 				const message = new Pic("message2.png").sca(0.8).centerReg().center(msgCont)
 				// .mov(0, -300)
@@ -236,11 +279,11 @@ https://zimjs.com/zapps
 				const welcomeSpeech = "Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.";
 				doggo.tap(() => {
 					speech.talk(welcomeSpeech, "Google francais", 1.0, "fr-FR");
-					timeout(8, () => {
-						messageText.size = 18;
-						messageText.text = "Press the mic and say something in English. \nI will translate it to French for you.";
+					timeout(12, () => {
+						messageText.size = 16;
+						messageText.text = "Press the mic and say something in English or French. \nI will translate it for you.";
 						S.update();
-						speech.talk("Press the mic and say something in English. I will translate it to French for you.", "Google francais", 1.0, "fr-FR");
+						speech.talk("Press the mic and say something in English or French and I will translate it for you.", "Google francais", 1.0, "fr-FR");
 					});
 				});
 				mic.tap(() => {
@@ -302,7 +345,7 @@ https://zimjs.com/zapps
 					const messages = [
 						{
 							role: 'system',
-							content: 'You are an AI assistant with over 400 years of experience in teaching French. Pretend that you are a dog named Lily and translate the English phrase given to you by the user to French.'
+							content: 'You are an AI assistant with over 400 years of experience in teaching French. Pretend that you are a dog named Lily and translate the English or French phrase given to you by the user to French or English. If they make a mistake, give them feedback.'
 						},
 						{
 							role: 'user',
