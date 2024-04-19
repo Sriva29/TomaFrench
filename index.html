@@ -58,15 +58,16 @@ https://zimjs.com/zapps
 		] //update serviceworker.js as well
 		const path = "assets/";
 		new Frame({
-			scaling: FULL, 
-			width: null, 
-			height: null, 
-			color: bgColor, 
-			outerColor: dark, 
-			ready: ready, 
-			assets: assets, 
+			scaling: FULL,
+			width: null,
+			height: null,
+			color: bgColor,
+			outerColor: dark,
+			ready: ready,
+			assets: assets,
 			path: path,
-			sensors: true,});
+			sensors: true,
+		});
 		function ready() {
 			new PWA(runZapp);
 			function runZapp() {
@@ -164,43 +165,53 @@ https://zimjs.com/zapps
 				new Circle(130, color)
 					.center(doggo)
 					.drag();
-				// on iOS, the sensors must be allowed first - this example works for all devices
-				const permissionType = "devicemotion"; // or "devicemotion"
-				const ask = new PermissionAsk(init, permissionType);
-				const lab = new Label().center();
 				const title = new Label({
 					text: "Toma French",
 					color: white,
 					font: "Lily Script One",
 					size: 60,
-				}).center().mov(0, -350);
-				S.update();
-				F.on("devicemotion", e => {
-					lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
-					zog(e.rotation.x, e.rotation.y, e.rotation.z);
-					S.update();
-				});
-				function init(yes) {
-					// if the user answers yes to the PermissionAsk
-					const errorPane = new Pane("SENSOR not available", yellow);
-					if (yes) {
-						// use the sensors       
-						lab.text = decimals(e.rotation.x) + "," + decimals(e.rotation.y) + "," + decimals(e.rotation.z);
-						S.update();
-					} else { // answered no to PermissionAsk dialog      
-						errorPane.show();
-					}
-				}
+				}).center().mov(0, -330);
+				// on iOS, the sensors must be allowed first - this example works for all devices
+				// const permissionType = "devicemotion"; // or "devicemotion"
+				// const ask = new PermissionAsk(init, permissionType);
+				// const lab = new Label().center();
+
+				// S.update();
+				// F.on("devicemotion", e => {
+				// 	lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
+				// 	zog(e.rotation.x, e.rotation.y, e.rotation.z);
+				// 	S.update();
+				// });
+				// function init(yes) {
+				// 	// if the user answers yes to the PermissionAsk
+				// 	const errorPane = new Pane("SENSOR not available", yellow);
+				// 	if (yes) {
+				// 		// use the sensors       
+				// 		lab.text = decimals(e.rotation.x) + "," + decimals(e.rotation.y) + "," + decimals(e.rotation.z);
+				// 		S.update();
+				// 	} else { // answered no to PermissionAsk dialog      
+				// 		errorPane.show();
+				// 	}
+				// }
 
 				new Pic("toma-icon.png").sca(0.35).center(doggo)
-				doggo.mov(20, -100);
+				doggo.mov(0, -30);
 				doggo.sca(0.8);
+
+				function doggoAni() {
+					doggo.animate({ props: { scale: 0.9 }, time: 1, loop: true, rewind: true });
+				}
+				doggoAni();
+				timeout(5, () => {
+					doggo.pauseAnimate();
+				});
+
 				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 220);
 				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 220).vis(false);
-				const msgCont = new Container().centerReg().center().mov(-20, -300);
+				const msgCont = new Container().centerReg().center().mov(-35, -250);
 				const message = new Pic("message2.png").sca(0.8).centerReg().center(msgCont)
-					// .mov(0, -300)
-					// .drag();
+				// .mov(0, -300)
+				// .drag();
 				const messageText = new Label({
 					text: "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.",
 					color: white,
@@ -214,17 +225,23 @@ https://zimjs.com/zapps
 					shadowBlur: 10,
 				}).centerReg().center(msgCont)
 					.mov(35, 35);
+
 				let label;
 				const speech = new Speech();
+				speech.recognition.lang = "fr-FR";
+				zog(speech.recognition.lang);
+				// zog(speech.voiceLanguages);
 				// interact at least once before talking
 				// micActive.tap(() => {
-					// speech.talk("Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.", "Google francais", 1.0, "fr-FR");
-					// speech.listen((text)=>{
-					// 	listening.text = text;
-					// });
-					// listening.vis(true);
-				// });
-
+				const welcomeSpeech = "Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.";
+				doggo.tap(() => {
+					speech.talk(welcomeSpeech, "Google francais", 1.0, "fr-FR");
+					timeout(8, () => {
+					messageText.text = "Press the mic and say something in English. \nI will translate it to French for you.";
+					S.update();
+					speech.talk("Press the mic and say something in English. I will translate it to French for you.", "Google francais", 1.0, "fr-FR");
+				});
+				});
 				mic.tap(() => {
 					speech.listen(false, "fr-FR");
 					micActive.vis(true);
@@ -239,7 +256,7 @@ https://zimjs.com/zapps
 					micActive.vis(false);
 					S.update();
 					wordsSaid = e.words;
-					timeout(5, () => {
+					timeout(2, () => {
 						zog("This is what is being sent to the LLM: ", wordsSaid)
 						sendToLLM(wordsSaid);
 					});
@@ -284,7 +301,7 @@ https://zimjs.com/zapps
 					const messages = [
 						{
 							role: 'system',
-							content: 'You are an AI assistant with over 400 years of experience in teaching French. Pretend that you are a dog named Lily and review the french phrase given to you by the user and give feedback.'
+							content: 'You are an AI assistant with over 400 years of experience in teaching French. Pretend that you are a dog named Lily and translate the English phrase given to you by the user to French.'
 						},
 						{
 							role: 'user',
