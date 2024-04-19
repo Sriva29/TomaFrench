@@ -166,13 +166,17 @@ https://zimjs.com/zapps
 					.drag();
 				doggo.addPhysics({ bounciness: 0, dynamic: false, angular: 1, density: 1.5 });
 				// on iOS, the sensors must be allowed first - this example works for all devices
-				const permissionType = "devicemotion"; // or "devicemotion"
+				const permissionType = "deviceorientation"; // or "devicemotion"
 				const ask = new PermissionAsk(init, permissionType);
 				const lab = new Label().center();
 				S.update();
+<<<<<<< HEAD:public/index.html
 				let forceX = 0;
 				let forceY = 0;
 				F.on("devicemotion", e => {
+=======
+				F.on("deviceorientation", e => {
+>>>>>>> parent of 99d7d11 (motion):index.html
 					lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
 					S.update();
 
