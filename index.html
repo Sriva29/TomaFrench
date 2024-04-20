@@ -75,7 +75,7 @@ https://zimjs.com/zapps
 
 				new Pic("toma-icon.png").sca(0.35).center(doggo)
 				doggo.mov(0, -30);
-				doggo.sca(0.8);
+				doggo.sca(0.7);
 
 				function doggoAni() {
 					doggo.animate({ props: { scale: 0.9 }, time: 1, loop: true, rewind: true });
@@ -97,7 +97,7 @@ https://zimjs.com/zapps
 					shadowColor: color,
 					shadowBlur: 10,
 				});
-				new Label({
+				const enLabel = new Label({
 					text: "EN",
 					color: white,
 					font: "Lily Script One",
@@ -106,20 +106,20 @@ https://zimjs.com/zapps
 					valign: CENTER,
 					shadowColor: color,
 					shadowBlur: 10,
-				}).center().mov(-70, 335);
+				}).center().mov(-70, 335).vis(false);
 				
-				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 200);
+				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 180).vis(false);
 
-				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 200).vis(false);
+				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 180).vis(false);
 				const msgCont = new Container().center().mov(-35, -250);
 				const message = new Pic("message2.png").sca(0.8).centerReg().center(msgCont)
 				const messageText = new Label({
-					text: "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.",
+					text: "Boop Lily's nose to start!",
 					color: white,
-					labelWidth: 300,
-					labelHeight: 100,
+					// labelWidth: 300,
+					// labelHeight: 100,
 					font: "Mitr",
-					size: 18,
+					size: 22,
 					align: CENTER,
 					valign: CENTER,
 					shadowColor: color,
@@ -129,7 +129,7 @@ https://zimjs.com/zapps
 
 				let label;
 				const speech = new Speech();
-				new Label({
+				const listenLang = new Label({
 					text: "Listening in English...",
 					color: white,
 					labelWidth: 300,
@@ -140,25 +140,39 @@ https://zimjs.com/zapps
 					valign: CENTER,
 					shadowColor: color,
 					shadowBlur: 10,
-				}).centerReg().mov(0, 295);
+				}).centerReg().mov(0, 285).vis(false);
 
 				const toggle = new Toggle({ label: frLabel }).pos(30, 25, CENTER, BOTTOM).change(() => {
 					zog(toggle.toggled);
 					if (toggle.toggled) {
 						speech.recognition.lang = "fr-FR";
 						zog(speech.recognition.lang);
+						listenLang.text = "Listening in French...";
+						S.update();
 					} else {
 						speech.recognition.lang = "en-US";
 						zog(speech.recognition.lang);
+						listenLang.text = "Listening in English...";
+						S.update();
 					}
 				});
+
+				toggle.vis(false);
 				
 				const welcomeSpeech = "Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.";
 				doggo.tap(() => {
+					messageText.text = "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.";
+					messageText.size = 18;
+					S.update();
 					speech.talk(welcomeSpeech, "Google francais", 1.0, "fr-FR");
 					timeout(12, () => {
 						messageText.size = 16;
+						messageText.labelWidth = 300;
 						messageText.text = "Press the mic and say something in English or French. \nI will translate it for you.";
+						mic.vis(true);
+						enLabel.vis(true);
+						toggle.vis(true);
+						listenLang.vis(true);
 						S.update();
 						speech.talk("Press the mic and say something in English or French and I will translate it for you.", "Google francais", 1.0, "fr-FR");
 					});
