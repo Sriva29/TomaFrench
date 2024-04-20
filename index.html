@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>ZIM - TomaFrench - Code Creativity</title>
+
+	<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ZIM Zapps
+Progressive Web App (PWA) tool output from
+https://zimjs.com/zapps 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+	<!-- ZIM PWA STEP 1 - MANIFEST -->
+	<link rel="manifest" href="manifest.json">
+
+	<!-- ZIM PWA STEP 2 - META -->
+	<meta name="apple-mobile-web-app-title" content="TomaFrench">
+	<meta name="theme-color" content="#333333">
+	<meta name="msapplication-TileColor" content="#333333">
+
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="apple-touch-icon" href="icons/icon_152.png">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="msapplication-TileImage" content="icons/icon_144.png">
+
+	<!-- should have favicons - see link below -->
+	<!-- see https://www.favicon-generator.org/ -->
+
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="msapplication-starturl" content="./">
+
+	<!-- ZIM PWA STEP 3 - SERVICE WORKER -->
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			if (location.protocol === "https:" && "serviceWorker" in navigator) navigator.serviceWorker.register("./serviceworker.js");
+		});
+	</script>
+
+	<!-- <script type="module"> -->
+
+	<script src="libraries/createjs.js"></script>
+	<script src="libraries/zim_min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+		// IC24_mobile1, mobile2, mobile3
+		const bgColor = "#cbfbf0"; //scandal
+		const color = "#bf30aa"; //Medium Red Violet
+		const colorLite = "#d4e8f1"; // Link Water
+		const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png", "toma-icon.png", "mic.png", "mic-on.png", "bg-black.jpg",
+			"https://fonts.googleapis.com/css2?family=Lily+Script+One&family=Mitr:wght@200;300;400;500;600;700&display=swap",
+			"message2.png",
+		] //update serviceworker.js as well
+		const path = "assets/";
+		new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
+		function ready() {
+			new PWA(runZapp);
+			function runZapp() {
+				new Pic("bg-black.jpg").scaleTo().center();
+				const holder = new Container(1000, 2000).scaleTo(S, 100, 100).center(); // Whatever the stage is fit it to 100 percent x and y
+				const doggo = new Container().center().drag({ all: true }).sca(1.1);
+				new Circle(130, color)
+					.center(doggo)
+					.drag();
+				const title = new Label({
+					text: "Toma French",
+					color: white,
+					font: "Lily Script One",
+					size: 60,
+				}).center().mov(0, -330);
+
+				new Pic("toma-icon.png").sca(0.35).center(doggo)
+				doggo.mov(0, -30);
+				doggo.sca(0.7);
+
+				function doggoAni() {
+					doggo.animate({ props: { scale: 0.9 }, time: 1, loop: true, rewind: true });
+				}
+				doggoAni();
+				timeout(5, () => {
+					doggo.pauseAnimate();
+				});
+
+				const frLabel = new Label({
+					text: "FR",
+					color: white,
+					// labelWidth: 300,
+					// labelHeight: 100,
+					font: "Lily Script One",
+					size: 32,
+					// align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				});
+				const enLabel = new Label({
+					text: "EN",
+					color: white,
+					font: "Lily Script One",
+					size: 32,
+					align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				}).center().mov(-70, 335).vis(false);
+				
+				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 180).vis(false);
+
+				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 180).vis(false);
+				const msgCont = new Container().center().mov(-35, -250);
+				const message = new Pic("message2.png").sca(0.8).centerReg().center(msgCont)
+				const messageText = new Label({
+					text: "Boop Lily's nose to start!",
+					color: white,
+					// labelWidth: 300,
+					// labelHeight: 100,
+					font: "Mitr",
+					size: 22,
+					align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				}).centerReg().center(msgCont)
+					.mov(35, 35);
+
+				let label;
+				const speech = new Speech();
+				const listenLang = new Label({
+					text: "Listening in English...",
+					color: white,
+					labelWidth: 300,
+					labelHeight: 15,
+					font: "Mitr",
+					size: 16,
+					align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				}).centerReg().mov(0, 285).vis(false);
+
+				const toggle = new Toggle({ label: frLabel }).pos(30, 25, CENTER, BOTTOM).change(() => {
+					zog(toggle.toggled);
+					if (toggle.toggled) {
+						speech.recognition.lang = "fr-FR";
+						zog(speech.recognition.lang);
+						listenLang.text = "Listening in French...";
+						S.update();
+					} else {
+						speech.recognition.lang = "en-US";
+						zog(speech.recognition.lang);
+						listenLang.text = "Listening in English...";
+						S.update();
+					}
+				});
+
+				toggle.vis(false);
+				
+				const welcomeSpeech = "Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.";
+				doggo.tap(() => {
+					messageText.text = "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.";
+					messageText.size = 18;
+					S.update();
+					speech.talk(welcomeSpeech, "Google francais", 1.0, "fr-FR");
+					timeout(12, () => {
+						messageText.size = 16;
+						messageText.labelWidth = 300;
+						messageText.text = "Press the mic and say something in English or French. \nI will translate it for you.";
+						mic.vis(true);
+						enLabel.vis(true);
+						toggle.vis(true);
+						listenLang.vis(true);
+						S.update();
+						speech.talk("Press the mic and say something in English or French and I will translate it for you.", "Google francais", 1.0, "fr-FR");
+					});
+				});
+
+				mic.tap(() => {
+					speech.listen(false, "fr-FR");
+					micActive.vis(true);
+					zog("Listening...")
+					S.update();
+				});
+
+				let wordsSaid = "";
+
+				speech.on("result", e => {
+					zog("Speech Recorded!");
+					micActive.vis(false);
+					S.update();
+					wordsSaid = e.words;
+					timeout(2, () => {
+						zog("This is what is being sent to the LLM: ", wordsSaid)
+						sendToLLM(wordsSaid);
+					});
+					if (label) label.dispose();
+					label = new Label({
+						text: capitalizeFirst(e.words),
+						labelWidth: 300,
+						labelHeight: 25,
+						font: "Mitr",
+						color: white,
+						align: CENTER,
+						valign: CENTER,
+						padding: 30
+					}).centerReg().mov(0, 100).alp(0).animate({ alpha: 1 }, .5, null, target => {
+						if (e.confidence) {
+							zog("confidence", Math.floor(e.confidence * 100));
+						}
+					});
+					S.update();
+				});
+
+				function sendToLLM(words) {
+					const messages = [
+						{
+							role: 'system',
+							content: 'You are an AI assistant with over 400 years of experience in teaching French. Pretend that you are a dog named Lily and translate the English or French phrase given to you by the user to French or English. If they make a mistake, give them feedback.'
+						},
+						{
+							role: 'user',
+							content: words,
+						},
+					];
+
+					fetch('https://open-ai-api-steel.vercel.app/api/talk', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							messages,
+							model: 'gpt-3.5-turbo',
+						})
+					})
+						.then(response => response.json())
+						.then(data => {
+							zog(data.response);
+							if (data) {
+								const feedback = data.response;
+								zog("AI Feedback: ", feedback);
+								messageText.text = feedback;
+								speech.talk(feedback, "Google francais", 1.0, "fr-FR");
+								S.update();
+							}
+						})
+						.catch(error => {
+							console.error('Error:', error);
+							zog('Failed to review.');
+						});
+				}
+			} // end runZapp
+		} // end ready
+	</script>
+</head>
+
+<body></body>
+
+</html>

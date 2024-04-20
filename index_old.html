@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>ZIM - TomaFrench - Code Creativity</title>
+        <script type="module">
+            // IC24_mobile1, mobile2, mobile3
+            import zim from "https://zimjs.org/cdn/016/zim";
+            const bgColor = "#cbfbf0"; //scandal
+            const color = "#bf30aa"; //Medium Red Violet
+            const colorLite = "#d4e8f1"; // Link Water
+            const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png"]
+            const path = "assets/";
+            new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
+            function ready() {
+                // Given F, S, W, H or frame, stage, stageW, stageH
+                new Pic("bg.jpg").scaleTo().center();
+                const holder = new Container(1000,2000).scaleTo(S,100,100).center(); // Whatever the stage is fit it to 100 percent x and y
+                const doggo = new Container().center().drag({all:true}).sca(1.1);
+                new Circle(130, color)
+                    .center(doggo)
+                    .drag();
+                
+                new Pic("poodle-crop.png").sca(0.18).center(doggo);
+                const tab = new Tabs()
+                    .siz(1000)
+                    .pos(0,0,CENTER,TOP, holder);
+                new Grid();
+                // responsive rectangle
+                new Rectangle(0.2*W, 0.2*H, black).loc(0.3*W,0.5*H);
+                F.on("resize", ()=>{
+                    // tab.top();
+                    tab.siz(W*0.90).pos(0,W*0.05,CENTER,TOP);//adding margin
+                })
+            } // end ready
+        </script>
+        <style>
+            body{
+                background-size:auto;
+                background-repeat:repeat-y;
+                background-image: url("assets/bg.jpg");
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+    </head>
+    <body></body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>ZIM - TomaFrench - Code Creativity</title>
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ZIM Zapps
+Progressive Web App (PWA) tool output from
+https://zimjs.com/zapps 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+<!-- ZIM PWA STEP 1 - MANIFEST -->
+<link rel="manifest" href="manifest.json">
+
+<!-- ZIM PWA STEP 2 - META -->
+<meta name="apple-mobile-web-app-title" content="TomaFrench">
+<meta name="theme-color" content="#333333">
+<meta name="msapplication-TileColor" content="#333333">
+
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link rel="apple-touch-icon" href="icons/icon_152.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="msapplication-TileImage" content="icons/icon_144.png">
+
+<!-- should have faveicons - see link below -->
+<!-- see https://www.favicon-generator.org/ -->
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="msapplication-starturl" content="./">
+
+<!-- ZIM PWA STEP 3 - SERVICE WORKER -->
+<script>
+	window.addEventListener("DOMContentLoaded", function () {
+		if (location.protocol === "https:" && "serviceWorker" in navigator) navigator.serviceWorker.register("./serviceworker.js");
+	});
+</script>
+
+        <!-- <script type="module"> -->
+
+        <script src="libraries/createjs.js"></script>
+        <script src="libraries/zim_min.js"></script>
+        <script>
+            // IC24_mobile1, mobile2, mobile3
+            // import zim from "https://zimjs.org/cdn/016/zim";
+            const bgColor = "#cbfbf0"; //scandal
+            const color = "#bf30aa"; //Medium Red Violet
+            const colorLite = "#d4e8f1"; // Link Water
+            const assets = ["poodle.jpg", "bg.jpg", "poodle-crop.jpg", "poodle-crop.png", "toma-icon.png"] //update serviceworker.js as well
+            const path = "assets/";
+            new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
+            function ready() {
+
+	// ZIM PWA STEP 4 - ADD TO HOME SCREEN (A2HS)
+	// NOTE: new PWA() works with ZIM Cat 04 or beyond
+	// Message shows if only if running from mobile Browser
+	// See https://zimjs.com/docs.html?item=PWA for more options
+
+	new PWA(runZapp);
+	function runZapp() {
+	                // Given F, S, W, H or frame, stage, stageW, stageH
+	                new Pic("bg.jpg").scaleTo().center();
+	                const holder = new Container(1000,2000).scaleTo(S,100,100).center(); // Whatever the stage is fit it to 100 percent x and y
+	                const doggo = new Container().center().drag({all:true}).sca(1.1);
+	                new Circle(130, color)
+	                    .center(doggo)
+	                    .drag();
+	                
+	                new Pic("toma-icon.png").sca(0.35).center(doggo);
+	                // const tab = new Tabs()
+	                //     .siz(1000)
+	                //     .pos(0,0,CENTER,TOP, holder);
+	                // new Grid();
+	                // responsive rectangle
+	                // new Rectangle(0.2*W, 0.2*H, black).loc(0.3*W,0.5*H);
+	                F.on("resize", ()=>{
+	                    // tab.top();
+	                    tab.siz(W*0.90).pos(0,W*0.05,CENTER,TOP);//adding margin
+	                })
+	} // end runZapp
+
+            } // end ready
+        </script>
+        <style>
+            body{
+                background-size:auto;
+                background-repeat:repeat-y;
+                background-image: url("assets/bg.jpg");
+            }
+        </style>
+        
+    </head>
+    <body></body>
+</html>
