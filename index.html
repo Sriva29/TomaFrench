@@ -48,7 +48,6 @@ https://zimjs.com/zapps
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
 		// IC24_mobile1, mobile2, mobile3
-		// import zim from "https://zimjs.org/cdn/016/zim";
 		const bgColor = "#cbfbf0"; //scandal
 		const color = "#bf30aa"; //Medium Red Violet
 		const colorLite = "#d4e8f1"; // Link Water
@@ -57,114 +56,10 @@ https://zimjs.com/zapps
 			"message2.png",
 		] //update serviceworker.js as well
 		const path = "assets/";
-		new Frame({
-			scaling: FULL,
-			width: null,
-			height: null,
-			color: bgColor,
-			outerColor: dark,
-			ready: ready,
-			assets: assets,
-			path: path,
-			sensors: true,
-		});
+		new Frame(FULL, null, null, bgColor, dark, ready, assets, path);
 		function ready() {
 			new PWA(runZapp);
 			function runZapp() {
-
-				// let start;
-				// function startScreen() {
-				// 	start = new Container().center();
-				// 	const startButton = new Button({
-				// 		label: "Start",
-				// 		width: 200,
-				// 		height: 50,
-				// 		backgroundColor: color,
-				// 		color: white,
-				// 		rollBackgroundColor: colorLite,
-				// 		rollColor: white,
-				// 		shadowBlur: 10,
-				// 		shadowColor: color,
-				// 	}).center(start);
-				// 	startButton.tap(() => {
-
-				// 		lilyIntro();
-				// 		// start.dispose();
-				// 	});
-				// }
-				// startScreen();
-
-				// function lilyIntro() {
-				// 	start.dispose();
-				// 	const lily = new Container().center();
-				// 	const lilyPic = new Pic("poodle-crop.png").center(lily);
-				// 	const lilyText = new Label({
-				// 		text: "Hello, I am Lily. \nI am a French Poodle. \nI am here to help you learn French. \nLet's have some fun together.",
-				// 		color: white,
-				// 		font: "Mitr",
-				// 		size: 18,
-				// 		align: CENTER,
-				// 		valign: CENTER,
-				// 		shadowColor: color,
-				// 		shadowBlur: 10,
-				// 	}).center(lily).mov(0, 200);
-				// 	const lilyButton = new Button({
-				// 		label: "Let's Start",
-				// 		width: 200,
-				// 		height: 50,
-				// 		backgroundColor: color,
-				// 		color: white,
-				// 		rollBackgroundColor: colorLite,
-				// 		rollColor: white,
-				// 		shadowBlur: 10,
-				// 		shadowColor: color,
-				// 	}).center(lily).mov(0, 300);
-				// 	lilyButton.tap(() => {
-				// 		lily.dispose();
-				// 		rainScene();
-				// 	});
-				// }
-				// // lilyIntro();
-				// function rainScene() {
-				// 	const rain = new Container().center();
-				// 	const rainPic = new Pic("rain.gif").center(rain);
-				// 	const rainText = new Label({
-				// 		text: "It's raining French words. \nLet's catch them all.",
-				// 		color: white,
-				// 		font: "Mitr",
-				// 		size: 18,
-				// 		align: CENTER,
-				// 		valign: CENTER,
-				// 		shadowColor: color,
-				// 		shadowBlur: 10,
-				// 	}).center(rain).mov(0, 200);
-				// 	const rainButton = new Button({
-				// 		label: "Catch the words",
-				// 		width: 200,
-				// 		height: 50,
-				// 		backgroundColor: color,
-				// 		color: white,
-				// 		rollBackgroundColor: colorLite,
-				// 		rollColor: white,
-				// 		shadowBlur: 10,
-				// 		shadowColor: color,
-				// 	}).center(rain).mov(0, 300);
-				// 	rainButton.tap(() => {
-				// 		rain.dispose();
-				// 		tomaFrench();
-				// 	});
-				// }
-
-				// function tomaFrench() {
-				
-				//---------------------------------------------------------
-				// DATA BIND
-				//---------------------------------------------------------
-				const b = new Bind(); // for data binding
-				const speechLang = new Label("fr-FR").bind("lang","fr-FR");	
-				b.to();
-
-
 				new Pic("bg-black.jpg").scaleTo().center();
 				const holder = new Container(1000, 2000).scaleTo(S, 100, 100).center(); // Whatever the stage is fit it to 100 percent x and y
 				const doggo = new Container().center().drag({ all: true }).sca(1.1);
@@ -177,28 +72,6 @@ https://zimjs.com/zapps
 					font: "Lily Script One",
 					size: 60,
 				}).center().mov(0, -330);
-				// on iOS, the sensors must be allowed first - this example works for all devices
-				// const permissionType = "devicemotion"; // or "devicemotion"
-				// const ask = new PermissionAsk(init, permissionType);
-				// const lab = new Label().center();
-
-				// S.update();
-				// F.on("devicemotion", e => {
-				// 	lab.text = e.rotation.x + "," + e.rotation.y + "," + e.rotation.z;
-				// 	zog(e.rotation.x, e.rotation.y, e.rotation.z);
-				// 	S.update();
-				// });
-				// function init(yes) {
-				// 	// if the user answers yes to the PermissionAsk
-				// 	const errorPane = new Pane("SENSOR not available", yellow);
-				// 	if (yes) {
-				// 		// use the sensors       
-				// 		lab.text = decimals(e.rotation.x) + "," + decimals(e.rotation.y) + "," + decimals(e.rotation.z);
-				// 		S.update();
-				// 	} else { // answered no to PermissionAsk dialog      
-				// 		errorPane.show();
-				// 	}
-				// }
 
 				new Pic("toma-icon.png").sca(0.35).center(doggo)
 				doggo.mov(0, -30);
@@ -212,49 +85,34 @@ https://zimjs.com/zapps
 					doggo.pauseAnimate();
 				});
 
-				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 220);
-				const toggle = new Toggle({label:"FR"}).center().change(()=>{
-				   zog(toggle.toggled);
+				const frLabel = new Label({
+					text: "FR",
+					color: white,
+					// labelWidth: 300,
+					// labelHeight: 100,
+					font: "Lily Script One",
+					size: 32,
+					// align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
 				});
-				const langSelector = new Selector(new Tile(new Circle().centerReg(), 2, 1, 20, 20))
-					.center()
-					.change(e => {
-						e.target.currentItem.alpha = 0;
-						S.update();
-					});
-				S.update();
-				zog(langSelector.currentItem);
-				zog(langSelector.selectedIndex);
-				// new Label({
-				// 	text: "En",
-				// 	color: white,
-				// 	labelWidth: 300,
-				// 	labelHeight: 100,
-				// 	font: "Mitr",
-				// 	size: 18,
-				// 	align: CENTER,
-				// 	valign: CENTER,
-				// 	shadowColor: color,
-				// 	shadowBlur: 10,
-				// }).center().mov(50, 200);
-				// new Label({
-				// 	text: "Fr",
-				// 	color: white,
-				// 	labelWidth: 300,
-				// 	labelHeight: 100,
-				// 	font: "Mitr",
-				// 	size: 18,
-				// 	align: CENTER,
-				// 	valign: CENTER,
-				// 	shadowColor: color,
-				// 	shadowBlur: 10,
-				// }).center().mov(-50, 200);
+				new Label({
+					text: "EN",
+					color: white,
+					font: "Lily Script One",
+					size: 32,
+					align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				}).center().mov(-70, 335);
+				
+				const mic = new Pic("mic.png").sca(1.0).center().mov(0, 200);
 
-				// const micActive = new Pic("mic-on.png").sca(0.6).center().mov(-50, 220);
-				const msgCont = new Container().centerReg().center().mov(-35, -250);
+				const micActive = new Pic("mic-on.png").sca(0.6).center().mov(0, 200).vis(false);
+				const msgCont = new Container().center().mov(-35, -250);
 				const message = new Pic("message2.png").sca(0.8).centerReg().center(msgCont)
-				// .mov(0, -300)
-				// .drag();
 				const messageText = new Label({
 					text: "Hello, I am Toma French. \nLet's learn French together. \n It will be fun. I promise. \n Almost as fun as playing fetch. \n Almost.",
 					color: white,
@@ -271,11 +129,30 @@ https://zimjs.com/zapps
 
 				let label;
 				const speech = new Speech();
-				speech.recognition.lang = "fr-FR";
-				zog(speech.recognition.lang);
-				// zog(speech.voiceLanguages);
-				// interact at least once before talking
-				// micActive.tap(() => {
+				new Label({
+					text: "Listening in English...",
+					color: white,
+					labelWidth: 300,
+					labelHeight: 15,
+					font: "Mitr",
+					size: 16,
+					align: CENTER,
+					valign: CENTER,
+					shadowColor: color,
+					shadowBlur: 10,
+				}).centerReg().mov(0, 295);
+
+				const toggle = new Toggle({ label: frLabel }).pos(30, 25, CENTER, BOTTOM).change(() => {
+					zog(toggle.toggled);
+					if (toggle.toggled) {
+						speech.recognition.lang = "fr-FR";
+						zog(speech.recognition.lang);
+					} else {
+						speech.recognition.lang = "en-US";
+						zog(speech.recognition.lang);
+					}
+				});
+				
 				const welcomeSpeech = "Hello, I am Toma French. Let's learn French together. It will be fun. I promise. Almost as fun as playing fetch. Almost.";
 				doggo.tap(() => {
 					speech.talk(welcomeSpeech, "Google francais", 1.0, "fr-FR");
@@ -286,16 +163,17 @@ https://zimjs.com/zapps
 						speech.talk("Press the mic and say something in English or French and I will translate it for you.", "Google francais", 1.0, "fr-FR");
 					});
 				});
+
 				mic.tap(() => {
 					speech.listen(false, "fr-FR");
 					micActive.vis(true);
+					zog("Listening...")
 					S.update();
 				});
 
-				let wordsSaid = "bonjour";
+				let wordsSaid = "";
 
 				speech.on("result", e => {
-					// e.words will be the words 
 					zog("Speech Recorded!");
 					micActive.vis(false);
 					S.update();
@@ -304,36 +182,18 @@ https://zimjs.com/zapps
 						zog("This is what is being sent to the LLM: ", wordsSaid)
 						sendToLLM(wordsSaid);
 					});
-					// new Button({
-					// 	label: "Send to LLM",
-					// 	width: 200,
-					// 	height: 50,
-					// 	backgroundColor: color,
-					// 	color: white,
-					// 	rollBackgroundColor: colorLite,
-					// 	rollColor: white,
-					// 	shadowBlur: 10,
-					// 	shadowColor: color,
-					// }).on("click", () => {
-					// 	zog("This is what is being sent to the LLM: ", wordsSaid)
-					// 	sendToLLM(wordsSaid);
-
-					// }).center().mov(0, 200);
-					// e.confidence will be percent confidence
-					if (label) label.dispose(); // get rid of old label
+					if (label) label.dispose();
 					label = new Label({
 						text: capitalizeFirst(e.words),
 						labelWidth: 300,
 						labelHeight: 25,
 						font: "Mitr",
-						// backgroundColor: (pluck(red, blue, orange, green, yellow)).toAlpha(.8),
 						color: white,
 						align: CENTER,
 						valign: CENTER,
 						padding: 30
 					}).centerReg().mov(0, 100).alp(0).animate({ alpha: 1 }, .5, null, target => {
 						if (e.confidence) {
-							// percent.text = Math.floor(e.confidence * 100);
 							zog("confidence", Math.floor(e.confidence * 100));
 						}
 					});
@@ -341,7 +201,6 @@ https://zimjs.com/zapps
 				});
 
 				function sendToLLM(words) {
-					// zog("words", words);
 					const messages = [
 						{
 							role: 'system',
@@ -353,35 +212,23 @@ https://zimjs.com/zapps
 						},
 					];
 
-					axios.post('http://localhost:5000/talk', {
-						messages,
-						model: 'gpt-3.5-turbo',
+					fetch('https://open-ai-api-steel.vercel.app/api/talk', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							messages,
+							model: 'gpt-3.5-turbo',
+						})
 					})
-						.then(response => {
-							zog(response);
-							// if (response.data.choices && response.data.choices.length > 0) {
-							if (response.data) {
-								// const feedback = response.data.choices[0].message.content;
-								const feedback = response.data;
+						.then(response => response.json())
+						.then(data => {
+							zog(data.response);
+							if (data) {
+								const feedback = data.response;
 								zog("AI Feedback: ", feedback);
-								// Display feedback to the user here
-								// For example, by updating the text of a Label or creating a new one
-								// new Label({
-								// 	text: feedback,
-								// 	color: white,
-								// 	width: W - 0.2 * W,
-								// 	height: 200,
-								// 	font: "Mitr",
-								// 	size: 18,
-								// 	align: CENTER,
-								// 	valign: CENTER,
-								// 	shadowColor: color,
-								// 	shadowBlur: 10,
-								// }).center()
-								// 	.mov(22, 35);
-
-								messageText.text = addNewlineAfterSentences(feedback);
-
+								messageText.text = feedback;
 								speech.talk(feedback, "Google francais", 1.0, "fr-FR");
 								S.update();
 							}
@@ -391,30 +238,9 @@ https://zimjs.com/zapps
 							zog('Failed to review.');
 						});
 				}
-				function addNewlineAfterSentences(text) {
-					return text.replace(/([.!?]"?)(\s|$)/g, '$1\n');
-				}
-
-
-			} // end tomaFrench
-
-
-			F.on("resize", () => {
-				// tab.top();
-				// tab.siz(W*0.90).pos(0,W*0.05,CENTER,TOP);//adding margin
-			})
-			// } // end runZapp
-
+			} // end runZapp
 		} // end ready
 	</script>
-	<style>
-		body {
-			background-size: auto;
-			background-repeat: repeat-y;
-			background-image: url("assets/bg-black.jpg");
-		}
-	</style>
-
 </head>
 
 <body></body>

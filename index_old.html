@@ -21,6 +21,97 @@
                     .center(doggo)
                     .drag();
                 
+				// let start;
+				// function startScreen() {
+				// 	start = new Container().center();
+				// 	const startButton = new Button({
+				// 		label: "Start",
+				// 		width: 200,
+				// 		height: 50,
+				// 		backgroundColor: color,
+				// 		color: white,
+				// 		rollBackgroundColor: colorLite,
+				// 		rollColor: white,
+				// 		shadowBlur: 10,
+				// 		shadowColor: color,
+				// 	}).center(start);
+				// 	startButton.tap(() => {
+
+				// 		lilyIntro();
+				// 		// start.dispose();
+				// 	});
+				// }
+				// startScreen();
+
+				// function lilyIntro() {
+				// 	start.dispose();
+				// 	const lily = new Container().center();
+				// 	const lilyPic = new Pic("poodle-crop.png").center(lily);
+				// 	const lilyText = new Label({
+				// 		text: "Hello, I am Lily. \nI am a French Poodle. \nI am here to help you learn French. \nLet's have some fun together.",
+				// 		color: white,
+				// 		font: "Mitr",
+				// 		size: 18,
+				// 		align: CENTER,
+				// 		valign: CENTER,
+				// 		shadowColor: color,
+				// 		shadowBlur: 10,
+				// 	}).center(lily).mov(0, 200);
+				// 	const lilyButton = new Button({
+				// 		label: "Let's Start",
+				// 		width: 200,
+				// 		height: 50,
+				// 		backgroundColor: color,
+				// 		color: white,
+				// 		rollBackgroundColor: colorLite,
+				// 		rollColor: white,
+				// 		shadowBlur: 10,
+				// 		shadowColor: color,
+				// 	}).center(lily).mov(0, 300);
+				// 	lilyButton.tap(() => {
+				// 		lily.dispose();
+				// 		rainScene();
+				// 	});
+				// }
+				// // lilyIntro();
+				// function rainScene() {
+				// 	const rain = new Container().center();
+				// 	const rainPic = new Pic("rain.gif").center(rain);
+				// 	const rainText = new Label({
+				// 		text: "It's raining French words. \nLet's catch them all.",
+				// 		color: white,
+				// 		font: "Mitr",
+				// 		size: 18,
+				// 		align: CENTER,
+				// 		valign: CENTER,
+				// 		shadowColor: color,
+				// 		shadowBlur: 10,
+				// 	}).center(rain).mov(0, 200);
+				// 	const rainButton = new Button({
+				// 		label: "Catch the words",
+				// 		width: 200,
+				// 		height: 50,
+				// 		backgroundColor: color,
+				// 		color: white,
+				// 		rollBackgroundColor: colorLite,
+				// 		rollColor: white,
+				// 		shadowBlur: 10,
+				// 		shadowColor: color,
+				// 	}).center(rain).mov(0, 300);
+				// 	rainButton.tap(() => {
+				// 		rain.dispose();
+				// 		tomaFrench();
+				// 	});
+				// }
+
+				// function tomaFrench() {
+
+				//---------------------------------------------------------
+				// DATA BIND
+				//---------------------------------------------------------
+				// const b = new Bind(); // for data binding
+				// const speechLang = new Label("fr-FR").bind("lang", "fr-FR");
+				// b.to();
                 new Pic("poodle-crop.png").sca(0.18).center(doggo);
                 const tab = new Tabs()
                     .siz(1000)
